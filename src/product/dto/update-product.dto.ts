@@ -19,5 +19,10 @@ description?: string;
 
 @IsOptional()
 @IsString()
-image?: 'ADMIN' | 'USER';
+image?: string;
+
+
+@IsNumber()
+@IsNotEmpty()
+stock: number;
 }

@@ -18,4 +18,8 @@ description?: string;
 @IsString()
 @IsNotEmpty()
 image: string;
+
+@IsNumber()
+@IsNotEmpty()
+stock: number;
 }

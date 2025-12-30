@@ -37,7 +37,7 @@ export class UserRepository {
     });
   }
 
-  update(id: number, data: UpdateRevoBankDto) {
+  update(id: number, data: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id },
       data,

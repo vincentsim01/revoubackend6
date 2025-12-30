@@ -15,20 +15,13 @@ datasource db {
 }
 
 
-model Product {
-  id          Int        @id @default(autoincrement())
-  name        String
-  price       Decimal
-  description String
-  images      String[]
-  cartItems   String[]
-  createdAt   DateTime   @default(now())
-}
 
 model User {
   id           Int           @id @default(autoincrement())
   email        String        @unique
   name         String?
+  password     String
+  role          String @default("USER")
 
   transactions Transaction[]
 }
@@ -37,7 +30,9 @@ model Product {
   id          Int                 @id @default(autoincrement())
   name        String
   price       Decimal             @db.Decimal(10, 2)
+  description String
   stock       Int
+  image       String
   createdAt   DateTime            @default(now())
 
   transactionItems TransactionItem[]

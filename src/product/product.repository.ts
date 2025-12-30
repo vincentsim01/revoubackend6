@@ -3,52 +3,54 @@ import { PrismaService } from '../prisma/prisma.service';
 // import {AuthController} from '../auth/auth.controller';
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
-import {UpdateUserDto} from './dto/update-user-dto';
+import {UpdateProductDto} from './dto/update-product.dto';
 
 @Injectable()
-export class UserRepository {
+export class ProductRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createUser(data: { name: string; email: string; password: string; balance?: number; role?: 'ADMIN' | 'USER' }) {
-    const hashedPassword = await bcrypt.hash(data.password, 10);
-
-    // await this.authController.loginUser({email: data.email, password: data.password});
-
-    return this.prisma.user.create({
+  async createProduct(data: { title: string; price: number; description: string; image: string; stock: number }) {
+    return this.prisma.product.create({
       data: {
-        name: data.name,
-        email: data.email,
-        password: hashedPassword,
-        role: data.role,
+        title: data.title,
+        price: data.price,
+        description: data.description,
+        image: data.image,
+        stock: data.stock,
       },
     });
   }
 
   findAll() {
-    return this.prisma.user.findMany({
-    //   include: { todos: true },
-    });
+    return this.prisma.product.findMany();
   }
 
   findOne(id: number) {
-    return this.prisma.user.findUnique({
+    return this.prisma.product.findUnique({
       where: { id },
-    //   include: { todos: true },
     });
   }
 
-  update(id: number, data: UpdateRevoBankDto) {
-    return this.prisma.user.update({
+  update(id: number, data: UpdateProductDto) {
+    return this.prisma.product.update({
       where: { id },
       data,
     });
   }
 
   delete(id: number) {
-    return this.prisma.user.delete({
+    return this.prisma.product.delete({
       where: { id },
     });
   }
+    // await this.authController.loginUser({email: data.email, password: data.password});
+
+
+
+
+
+
+
 
 
   findByEmail(email: string) {
