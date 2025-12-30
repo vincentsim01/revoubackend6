@@ -1,10 +1,16 @@
-import { IsInt, IsPositive } from 'class-validator';
+import { IsInt, IsPositive, IsArray } from 'class-validator';
 
 export class CreateTransactionItemDto {
-  @IsInt()
-  productId: number;
+
 
   @IsInt()
   @IsPositive()
-  quantity: number;
+  userId: number;
+
+    @IsInt()
+  @IsPositive()
+  total: number;
+
+    @IsArray()
+    items: any[];
 }
