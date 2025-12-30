@@ -60,3 +60,30 @@ model TransactionItem {
 
   @@unique([transactionId, productId])
 }
+
+
+model Payment {
+  id            Int      @id @default(autoincrement())
+  transactionId Int
+  provider      String   // Stripe, Midtrans, Xendit
+  status        String   // PENDING, PAID, FAILED
+  amount        Decimal  @db.Decimal(10, 2)
+  paidAt        DateTime?
+
+  transaction Transaction @relation(fields: [transactionId], references: [id])
+
+  @@unique([transactionId])
+}
+
+
+model Cart {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  variantId Int
+  quantity  Int
+
+  user    User           @relation(fields: [userId], references: [id])
+  variant ProductVariant @relation(fields: [variantId], references: [id])
+
+  @@unique([userId, variantId])
+}

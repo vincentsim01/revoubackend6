@@ -10,9 +10,12 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+import { PaymentModule } from './payment/payment.module';
+import { CartModule } from './cart/cart.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
-  imports: [UserModule, TransactionModule, AccountModule, ProductModule, PrismaModule, AuthModule],
+  imports: [UserModule, TransactionModule, AccountModule, ProductModule, PrismaModule, AuthModule, PaymentModule, CartModule],
   controllers: [AppController, AuthController],
   providers: [AppService, PrismaService, AuthService],
 })
