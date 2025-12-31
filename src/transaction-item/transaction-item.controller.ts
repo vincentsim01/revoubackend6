@@ -9,7 +9,7 @@ import { OwnershipGuard } from 'src/auth/guards/ownership.guard';
 import { Role } from 'src/auth/decorators/roles.decorator';
 
 
-@Controller('clients')
+@Controller('TransactionItem')
 // @UseGuards(JwtAuthGuard)
 
 export class TransactionItemController {
