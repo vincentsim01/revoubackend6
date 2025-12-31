@@ -1,51 +1,42 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-  moduleFormat = "cjs"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
-
-
 
 model User {
   id           Int           @id @default(autoincrement())
   email        String        @unique
   name         String?
   password     String
-  role          String @default("USER")
-
+  role         String        @default("USER")
   transactions Transaction[]
+  bookings    BookingSession[]
 }
 
 model Product {
-  id          Int                 @id @default(autoincrement())
-  name        String
-  price       Decimal             @db.Decimal(10, 2)
-  description String
-  stock       Int
-  image       String
-  createdAt   DateTime            @default(now())
-
-  transactionItems TransactionItem[]
+  id              Int               @id @default(autoincrement())
+  name            String
+  price           Decimal           @db.Decimal(10, 2)
+  createdAt       DateTime          @default(now())
+  stock           Int
+  description     String
+  image           String
+  transactionItem TransactionItem[]
 }
 
 model Transaction {
-  id          Int                 @id @default(autoincrement())
-  userId      Int
-  total       Decimal             @db.Decimal(10, 2)
-  createdAt   DateTime            @default(now())
-
-  user        User                @relation(fields: [userId], references: [id])
-  items       TransactionItem[]
+  id        Int               @id @default(autoincrement())
+  userId    Int
+  total     Decimal           @db.Decimal(10, 2)
+  createdAt DateTime          @default(now())
+  user      User              @relation(fields: [userId], references: [id])
+  items     TransactionItem[]
+  bookings    BookingSession[]
 }
 
 model TransactionItem {
@@ -54,36 +45,46 @@ model TransactionItem {
   productId     Int
   quantity      Int
   price         Decimal     @db.Decimal(10, 2)
-
-  transaction   Transaction @relation(fields: [transactionId], references: [id])
   product       Product     @relation(fields: [productId], references: [id])
+  transaction   Transaction @relation(fields: [transactionId], references: [id])
+
+  booking     BookingSession[]
 
   @@unique([transactionId, productId])
 }
 
 
-model Payment {
-  id            Int      @id @default(autoincrement())
-  transactionId Int
-  provider      String   // Stripe, Midtrans, Xendit
-  status        String   // PENDING, PAID, FAILED
-  amount        Decimal  @db.Decimal(10, 2)
-  paidAt        DateTime?
 
-  transaction Transaction @relation(fields: [transactionId], references: [id])
+model Package {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique // BASIC, PREMIUM, PLATINUM
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  durationMin Int      // duration in minutes
 
-  @@unique([transactionId])
+  bookings    BookingSession[]
 }
 
 
-model Cart {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  variantId Int
-  quantity  Int
+model BookingSession {
+  id            Int      @id @default(autoincrement())
 
-  user    User           @relation(fields: [userId], references: [id])
-  variant ProductVariant @relation(fields: [variantId], references: [id])
+  bookingDate   DateTime
+  status        String   @default("PENDING") 
+  notes         String?
 
-  @@unique([userId, variantId])
+  userId        Int
+  packageId     Int
+  transactionitemId   Int
+  transactionId Int?     // optional until paid
+
+  user        User        @relation(fields: [userId], references: [id])
+  package     Package     @relation(fields: [packageId], references: [id])
+  transaction Transaction? @relation(fields: [transactionId], references: [id])
+  transactionItem TransactionItem   @relation(fields:[transactionitemId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([bookingDate])
 }

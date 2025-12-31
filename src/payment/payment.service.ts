@@ -1,26 +1,58 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 
 @Injectable()
 export class PaymentService {
-  create(createPaymentDto: CreatePaymentDto) {
-    return 'This action adds a new payment';
+  constructor(private prisma: PrismaService) {}
+
+  create(dto: CreatePaymentDto) {
+    return this.prisma.payment.create({
+      data: {
+        transactionId: dto.transactionId,
+        provider: dto.provider,
+        status: dto.status,
+        amount: dto.amount,
+        paidAt: dto.paidAt,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all payment`;
+    return this.prisma.payment.findMany({
+      include: { transaction: true },
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} payment`;
+    return this.prisma.payment.findUnique({
+      where: { id },
+      include: { transaction: true },
+    });
   }
 
-  update(id: number, updatePaymentDto: UpdatePaymentDto) {
-    return `This action updates a #${id} payment`;
+  update(id: number, dto: UpdatePaymentDto) {
+    return this.prisma.payment.update({
+      where: { id },
+      data: dto,
+    });
+  }
+
+  async markAsPaid(id: number) {
+    const payment = await this.findOne(id);
+    if (!payment) throw new NotFoundException('Payment not found');
+
+    return this.prisma.payment.update({
+      where: { id },
+      data: {
+        status: 'PAID',
+        paidAt: new Date(),
+      },
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} payment`;
+    return this.prisma.payment.delete({ where: { id } });
   }
 }
