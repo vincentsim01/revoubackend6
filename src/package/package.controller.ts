@@ -1,7 +1,7 @@
-import { UserService } from './user.service';
+import { PackageService } from './package.service';
 import { Controller , Get, Param, Post, Body, UseGuards, Patch, Delete} from '@nestjs/common';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { UpdateUserDto } from './dto/update-user-dto';
+import { UpdatePackageDto } from './dto/update-package.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { OwnershipGuard } from 'src/auth/guards/ownership.guard';
@@ -9,49 +9,49 @@ import { OwnershipGuard } from 'src/auth/guards/ownership.guard';
 import { Role } from 'src/auth/decorators/roles.decorator';
 
 
-@Controller('user')
+@Controller('package')
 // @UseGuards(JwtAuthGuard)
 
-export class UserController {
-    constructor(private readonly userService:UserService){}
+export class PackageController {
+    constructor(private readonly packageService:PackageService){}
 
     @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
     @Roles(Role.ADMIN)
     @Get()
-    getAllClients(){
-        return this.userService.getAllClients();
+    getAllPackages(){
+        return this.packageService.getAllPackages();
     }
 
     @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
     @Roles(Role.ADMIN)
     @Get(':id')
-    getClient(@Param('id') id:string){
-        return this.userService.getClientById(Number(id));
+    getPackage(@Param('id') id:string){
+        return this.packageService.getPackageById(Number(id));
     }
     @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
     @Roles(Role.ADMIN)
     @Patch(':id')
-    updateClient(@Param('id') id:string, @Body() data: UpdateUserDto){
-        return this.userService.update(Number(id), data);
+    updatePackage(@Param('id') id:string, @Body() data: UpdatePackageDto){
+        return this.packageService.update(Number(id), data);
     }
     @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
     @Roles(Role.ADMIN)
     @Delete(':id')
-    deleteClient(@Param('id') id:string){
-        return this.userService.delete(Number(id));
+    deletePackage(@Param('id') id:string){
+        return this.packageService.delete(Number(id));
     }
     @UseGuards(JwtAuthGuard)
     @Post()
-    createClient(
+    createPackage(
         @Body() body:{
-            id:number,
+    
             name:string,
-            email:string,
-            password:string,
-            role: 'ADMIN' | 'USER',
+            description:string,
+            price:number,
+            durationMin:number,
         },
     ){
-        return this.userService.createClient(body);
+        return this.packageService.createPackage(body);
     }
 
 }
