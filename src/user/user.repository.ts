@@ -9,7 +9,7 @@ import {UpdateUserDto} from './dto/update-user-dto';
 export class UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createUser(data: { name: string; email: string; password: string; balance?: number; role?: 'ADMIN' | 'USER' }) {
+  async createUser(data: { name: string; email: string; password: string;  role?: 'ADMIN' | 'USER' }) {
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
     // await this.authController.loginUser({email: data.email, password: data.password});

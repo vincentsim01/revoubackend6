@@ -40,11 +40,11 @@ export class UserController {
     deleteClient(@Param('id') id:string){
         return this.userService.delete(Number(id));
     }
-    @UseGuards(JwtAuthGuard)
-    @Post()
+
+    @Post('signup')
     createClient(
         @Body() body:{
-            id:number,
+            // id:number,
             name:string,
             email:string,
             password:string,

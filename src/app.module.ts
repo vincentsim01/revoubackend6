@@ -7,8 +7,6 @@ import { AccountModule } from './account/account.module';
 import { ProductModule } from './product/product.module';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaModule } from './prisma/prisma.module';
-import { AuthService } from './auth/auth.service';
-import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { BookingSessionModule } from './bookingsession/bookingsession.module';
 import { PackageModule } from './package/package.module';
@@ -16,10 +14,11 @@ import { CategoryModule } from './category/category.module';
 import { TransactionItemModule } from './transaction-item/transaction-item.module';
 import { CartModule } from './cart/cart.module';
 import { PaymentModule } from './payment/payment.module';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [UserModule, TransactionModule, AccountModule, ProductModule, PrismaModule, AuthModule, PaymentModule, CartModule, TransactionItemModule, CategoryModule, PackageModule, BookingSessionModule],
-  controllers: [AppController, AuthController],
-  providers: [AppService, PrismaService, AuthService],
+  controllers: [AppController],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
