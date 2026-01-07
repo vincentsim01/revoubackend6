@@ -10,8 +10,6 @@ import { Role } from 'src/auth/decorators/roles.decorator';
 
 
 @Controller('package')
-// @UseGuards(JwtAuthGuard)
-
 export class PackageController {
     constructor(private readonly packageService:PackageService){}
 
@@ -40,11 +38,11 @@ export class PackageController {
     deletePackage(@Param('id') id:string){
         return this.packageService.delete(Number(id));
     }
-    @UseGuards(JwtAuthGuard)
-    @Post()
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(Role.ADMIN)
+    @Post('createpackage')
     createPackage(
         @Body() body:{
-    
             name:string,
             description:string,
             price:number,

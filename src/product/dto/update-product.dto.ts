@@ -23,6 +23,6 @@ image?: string;
 
 
 @IsNumber()
-@IsNotEmpty()
-stock: number;
+@IsOptional()
+stock?  : number;
 }

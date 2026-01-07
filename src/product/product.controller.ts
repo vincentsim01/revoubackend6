@@ -15,7 +15,7 @@ import { Role } from 'src/auth/decorators/roles.decorator';
 export class ProductController {
     constructor(private readonly productService:ProductService){}
 
-    @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
+    @UseGuards(JwtAuthGuard )
     @Roles(Role.ADMIN)
     @Get()
     getAllProducts(){
@@ -35,13 +35,14 @@ export class ProductController {
         return this.productService.update(Number(id), data);
     }
     @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
-    @Roles(Role.ADMIN)
+        @Roles(Role.ADMIN)
     @Delete(':id')
     deleteProduct(@Param('id') id:string){
         return this.productService.delete(Number(id));
     }
-    @UseGuards(JwtAuthGuard)
-    @Post()
+    @UseGuards(JwtAuthGuard, RolesGuard)
+            @Roles(Role.ADMIN)
+    @Post('createproduct')
     createProduct(
         @Body() body:{
             // id:number,
