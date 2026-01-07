@@ -51,9 +51,5 @@ export class PackageRepository {
   }
 
 
-  findByEmail(email: string) {
-    return this.prisma.package.findUnique({
-      where: { email },
-    });
-  }
+
 }

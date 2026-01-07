@@ -8,16 +8,22 @@ export class PaymentService {
   constructor(private prisma: PrismaService) {}
 
   create(dto: CreatePaymentDto) {
-    return this.prisma.payment.create({
-      data: {
-        transactionId: dto.transactionId,
-        provider: dto.provider,
-        status: dto.status,
-        amount: dto.amount,
-        paidAt: dto.paidAt,
-      },
-    });
+    // build data object
+    const data: any = {
+      transactionId: dto.transactionId,
+      provider: dto.provider,
+      status: dto.status,
+      amount: dto.amount,
+    };
+
+    // only set paidAt if it exists
+    if (dto.paidAt) {
+      data.paidAt = new Date(dto.paidAt); // convert ISO string to Date
+    }
+
+    return this.prisma.payment.create({ data });
   }
+  
 
   findAll() {
     return this.prisma.payment.findMany({

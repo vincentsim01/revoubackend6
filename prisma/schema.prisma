@@ -20,7 +20,7 @@ model User {
 
 model Product {
   id              Int               @id @default(autoincrement())
-  name            String
+  title            String
   price           Decimal           @db.Decimal(10, 2)
   createdAt       DateTime          @default(now())
   stock           Int
@@ -48,6 +48,7 @@ model Transaction {
   user      User              @relation(fields: [userId], references: [id])
   items     TransactionItem[]
   bookings    BookingSession[]
+  payment    Payment[]
 }
 
 model TransactionItem {
@@ -74,6 +75,17 @@ model Package {
   durationMin Int      // duration in minutes
 
   bookings    BookingSession[]
+}
+
+model Payment {
+  id          Int      @id @default(autoincrement())
+  provider    String
+  amount      Float
+  status      String
+  paidAt      DateTime 
+   transactionId Int
+   transaction Transaction? @relation(fields: [transactionId], references: [id])
+
 }
 
 

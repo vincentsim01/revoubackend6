@@ -9,7 +9,7 @@ import {UpdateTransactionItemDto} from './dto/update-transaction.dto';
 export class TransactionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createTransaction(data: { quantity: number; userId: number; total: number; items: any[] }) {
+  async createTransaction(data: { userId: number; total: number; items: any[] }) {
 
 
     // await this.authController.loginUser({email: data.email, password: data.password});
@@ -18,7 +18,7 @@ export class TransactionRepository {
       data: {
         userId: data.userId,
         total: data.total,
-        items: data.items[],
+        // items: data.items,
       },
     });
   }

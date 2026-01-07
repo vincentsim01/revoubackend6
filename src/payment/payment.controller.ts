@@ -48,7 +48,7 @@ export class PaymentController {
             provider:string,
             status:string,
             amount:number,
-            paidAt: Date,
+            paidAt: string,
         },
     ){
         return this.paymentService.create(body);

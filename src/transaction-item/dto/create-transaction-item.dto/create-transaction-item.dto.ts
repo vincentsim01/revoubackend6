@@ -1,17 +1,18 @@
-import { IsBoolean, IsString, IsEmail, IsNotEmpty, IsOptional, IsNumber, MinLength, Matches, IsDateString } from 'class-validator';
+import { IsBoolean, IsString, IsEmail, IsNotEmpty, IsInt, IsOptional, IsNumber, MinLength, Matches, IsDateString, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 
 export class CreateTransactionItemDto {
 
 
-@IsNumber()
+@ IsInt()
 transactionId: number;
 
-@IsNumber()
+@ IsInt()
 productId: number;
 
 @IsNumber()
+@Min(1)
 quantity: number;
 
 @IsNumber()

@@ -11,7 +11,7 @@ export class UpdateTransactionItemDto {
   @IsPositive()
   total: number;
 
-  @IsArray()
-  @IsOptional()
-  items: any[];
+  // @IsArray()
+  // @IsOptional()
+  // items: any[];
 }

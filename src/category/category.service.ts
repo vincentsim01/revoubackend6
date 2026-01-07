@@ -18,11 +18,7 @@ export class CategoryService {
         return category;
     }
 
-    findByEmail(email:string){
-        const category =  this.categoryRepo.findByEmail(email);
-        if(!category) throw new NotFoundException('category not found');
-        return category;
-    }
+
 
     update(id: number, data: UpdateCategoryDto) {
     return this.categoryRepo.update(id, data);

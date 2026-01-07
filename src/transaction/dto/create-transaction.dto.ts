@@ -11,6 +11,6 @@ export class CreateTransactionItemDto {
   @IsPositive()
   total: number;
 
-    @IsArray()
-    items: any[];
+    // @IsArray()
+    // items: any[];
 }

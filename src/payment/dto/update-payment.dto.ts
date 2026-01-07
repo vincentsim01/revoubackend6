@@ -4,23 +4,21 @@ import { IsBoolean, IsString, IsEmail, IsNotEmpty, IsOptional, IsNumber, MinLeng
 import { Type } from 'class-transformer';
 
 export class UpdatePaymentDto {
+    
+    @IsOptional()
+    @IsString()
+    provider?: string;
+    
+    @IsOptional()
+    @IsString()
+    status?: string;
+    
     @IsOptional()
     @IsNumber()
-    transactionId: number;
-    
-    @IsOptional()
-    @IsString()
-    provider: string;
-    
-    @IsOptional()
-    @IsString()
-    status: string;
-    
-    @IsOptional()
     @Type(() => Number)
-    amount: number;  
+    amount?: number;  
     
     @IsOptional()
     @IsDateString()
-    paidAt?: Date;
+    paidAt?: string;
 }

@@ -14,11 +14,12 @@ provider: string;
 @IsString()
 status: string;
 
+@IsNumber()
 @Type(() => Number)
 amount: number;  
 
 @IsOptional()
 @IsDateString()
-paidAt?: Date;
+paidAt?: string;
 
 }

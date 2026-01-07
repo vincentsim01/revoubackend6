@@ -9,7 +9,7 @@ import {UpdateCategoryDto} from './dto/update-category.dto';
 export class CategoryRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createCategory(data: { name: string; description: string; productId: number; image?: string;  }) {
+  async createCategory(data: { name: string; description: string; productId: number; image: string;  }) {
 
 
     // await this.authController.loginUser({email: data.email, password: data.password});
@@ -51,9 +51,5 @@ export class CategoryRepository {
   }
 
 
-  findByEmail(email: string) {
-    return this.prisma.category.findUnique({
-      where: { email },
-    });
-  }
+
 }

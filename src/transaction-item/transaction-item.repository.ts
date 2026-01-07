@@ -50,9 +50,19 @@ export class TransactionItemRepository {
   }
 
 
-  findByEmail(email: string) {
-    return this.prisma.transactionItem.findUnique({
-      where: {  email  },
-    });
-  }
+findByEmail(email: string) {
+  return this.prisma.transactionItem.findMany({
+    where: {
+      transaction: {
+        user: {
+          email: email,
+        },
+      },
+    },
+    include: {
+      product: true,
+      transaction: true,
+    },
+  });
+}
 }
