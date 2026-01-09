@@ -8,7 +8,7 @@ import { OwnershipGuard } from 'src/auth/guards/ownership.guard';
 // import { Roles } from '../auth/guards/roles.guard';
 import { Role } from 'src/auth/decorators/roles.decorator';
 
-
+    
 @Controller('user')
 // @UseGuards(JwtAuthGuard)
 
