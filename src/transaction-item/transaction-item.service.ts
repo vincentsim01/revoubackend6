@@ -1,4 +1,3 @@
-// import { BatchPayload } from './../../node_modules/.prisma/client/index.d';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TransactionItemRepository } from './transaction-item.repository';
 import { PrismaService } from '../prisma/prisma.service';
@@ -6,48 +5,41 @@ import { UpdateTransactionItemDto } from './dto/update-transaction-item.dto/upda
 
 @Injectable()
 export class TransactionItemService {
-    constructor(private readonly transactionItemRepo: TransactionItemRepository, private readonly prisma: PrismaService){}
+  constructor(
+    private readonly transactionItemRepo: TransactionItemRepository,
+    private readonly prisma: PrismaService,
+  ) {}
 
-    getAllTransactionItems(){
-        return this.transactionItemRepo.findAll();
-    }
+  getAllTransactionItems() {
+    return this.transactionItemRepo.findAll();
+  }
 
-    getTransactionItemById(id:number){
-        const transactionItem =  this.transactionItemRepo.findOne(id);
-        if(!transactionItem) throw new NotFoundException('transaction item not found');
-        return transactionItem;
-    }
+  getTransactionItemById(id: number) {
+    return this.transactionItemRepo.findOne(id);
+  }
 
-    findByEmail(email:string){
-        const client =  this.transactionItemRepo.findByEmail(email);
-        if(!client) throw new NotFoundException('client not found');
-        return client;
-    }
+  getTransactionItemsByTransactionId(transactionId: number) {
+    return this.transactionItemRepo.findByTransactionId(transactionId);
+  }
 
-    update(id: number, data: UpdateTransactionItemDto) {
+  getTransactionItemsByProductId(productId: number) {
+    return this.transactionItemRepo.findByProductId(productId);
+  }
+
+  createTransactionItem(data: {
+    transactionId: number;
+    productId: number;
+    quantity: number;
+    price: number;
+  }) {
+    return this.transactionItemRepo.createTransactionItem(data);
+  }
+
+  update(id: number, data: UpdateTransactionItemDto) {
     return this.transactionItemRepo.update(id, data);
-    //   where: { id },
-    //   data,
-    };
+  }
 
-    delete(id: number) {
+  delete(id: number) {
     return this.transactionItemRepo.delete(id);
-    //   where: { id },
-    //   data,
-    };
-  
-
-    createTransactionItem(
-        data:{
-            // id:number,
-            transactionId: number,
-            productId: number,
-            quantity: number,
-            price: number,
-  
-
-        }
-    ){
-        return this.transactionItemRepo.createTransactionItem(data);
-    }
+  }
 }

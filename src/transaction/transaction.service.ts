@@ -1,45 +1,35 @@
-// import { BatchPayload } from './../../node_modules/.prisma/client/index.d';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { TransactionRepository } from './transaction.repository';
-import { PrismaService } from '../prisma/prisma.service';
-import { UpdateTransactionItemDto } from './dto/update-transaction.dto';
+import { UpdateTransactionDto } from './dto/update-transaction.dto';
 
 @Injectable()
 export class TransactionService {
-    constructor(private readonly transactionRepo: TransactionRepository, private readonly prisma: PrismaService){}
+  constructor(private readonly transactionRepo: TransactionRepository) {}
 
-    getAllTransactions(){
-        return this.transactionRepo.findAll();
+  getAllTransactions() {
+    return this.transactionRepo.findAll();
+  }
+
+  getTransactionById(id: number) {
+    return this.transactionRepo.findOne(id);
+  }
+
+  getTransactionsByUserId(userId: number) {
+    return this.transactionRepo.findByUserId(userId);
+  }
+
+  createTransaction(data: { userId: number; total: number | string }) {
+    if (typeof data.total === 'number' && data.total <= 0) {
+      throw new BadRequestException('Total must be greater than 0');
     }
+    return this.transactionRepo.createTransaction(data);
+  }
 
-    getTransactionById(id:number){
-        const transaction =  this.transactionRepo.findOne(id);
-        if(!transaction) throw new NotFoundException('transaction not found');
-        return transaction;
-    }
-
-
-    update(id: number, data: UpdateTransactionItemDto) {
+  update(id: number, data: UpdateTransactionDto) {
     return this.transactionRepo.update(id, data);
-    //   where: { id },
-    //   data,
-    };
+  }
 
-    delete(id: number) {
+  delete(id: number) {
     return this.transactionRepo.delete(id);
-    //   where: { id },
-    //   data,
-    };
-  
-
-    createTransaction(
-        data:{
-            userId:number,
-            total: number,
-            items: any[],
-
-        }
-    ){
-        return this.transactionRepo.createTransaction(data);
-    }
+  }
 }

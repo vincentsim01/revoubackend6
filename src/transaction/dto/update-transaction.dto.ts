@@ -1,17 +1,15 @@
-import { IsInt, IsPositive, IsOptional, IsArray } from 'class-validator';
+import { IsInt, IsPositive, IsOptional, IsNumber } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class UpdateTransactionItemDto {
-
-      @IsOptional()
-  @IsInt()
-  userId: number;
-
+export class UpdateTransactionDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
-  total: number;
+  userId?: number;
 
-  // @IsArray()
-  // @IsOptional()
-  // items: any[];
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  @Type(() => Number)
+  total?: number;
 }

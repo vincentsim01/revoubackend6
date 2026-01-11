@@ -1,21 +1,31 @@
-import { IsBoolean, IsString, IsEmail, IsNotEmpty, IsInt, IsOptional, IsNumber, MinLength, Matches, IsDateString, Min } from 'class-validator';
+import {
+  IsInt,
+  IsPositive,
+  IsNotEmpty,
+  IsNumber,
+  IsDecimal,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
-
 export class CreateTransactionItemDto {
+  @IsInt()
+  @IsPositive()
+  @IsNotEmpty()
+  transactionId: number;
 
+  @IsInt()
+  @IsPositive()
+  @IsNotEmpty()
+  productId: number;
 
-@ IsInt()
-transactionId: number;
+  @IsInt()
+  @IsPositive()
+  @IsNotEmpty()
+  quantity: number;
 
-@ IsInt()
-productId: number;
-
-@IsNumber()
-@Min(1)
-quantity: number;
-
-@IsNumber()
-price: number;  
-
+  @IsDecimal({ force_decimal: true })
+  @IsPositive()
+  @IsNotEmpty()
+  @Type(() => Number)
+  price: number;
 }

@@ -8,7 +8,7 @@ import { OwnershipGuard } from 'src/auth/guards/ownership.guard';
 // import { Roles } from '../auth/guards/roles.guard';
 import { Role } from 'src/auth/decorators/roles.decorator';
 
-    
+
 @Controller('user')
 // @UseGuards(JwtAuthGuard)
 
@@ -22,12 +22,20 @@ export class UserController {
         return this.userService.getAllClients();
     }
 
-    @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
-    @Roles(Role.ADMIN)
-    @Get(':id')
+    @UseGuards(JwtAuthGuard, OwnershipGuard)
+    // @Roles(Role.ADMIN)
+    @Get('id/:id')
     getClient(@Param('id') id:string){
         return this.userService.getClientById(Number(id));
     }
+
+    // @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
+    // @Roles(Role.ADMIN)
+    @Get('email/:email')
+    getClientByEmail(@Param('email') email:string){
+        return this.userService.findByEmail(email);
+    }
+
     @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
     @Roles(Role.ADMIN)
     @Patch(':id')

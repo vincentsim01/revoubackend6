@@ -1,64 +1,43 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PaymentRepository } from './payment.repository';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 
 @Injectable()
 export class PaymentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly paymentRepo: PaymentRepository) {}
 
   create(dto: CreatePaymentDto) {
-    // build data object
-    const data: any = {
-      transactionId: dto.transactionId,
-      provider: dto.provider,
-      status: dto.status,
-      amount: dto.amount,
-    };
-
-    // only set paidAt if it exists
-    if (dto.paidAt) {
-      data.paidAt = new Date(dto.paidAt); // convert ISO string to Date
-    }
-
-    return this.prisma.payment.create({ data });
+    return this.paymentRepo.create(dto);
   }
-  
 
   findAll() {
-    return this.prisma.payment.findMany({
-      include: { transaction: true },
-    });
+    return this.paymentRepo.findAll();
   }
 
   findOne(id: number) {
-    return this.prisma.payment.findUnique({
-      where: { id },
-      include: { transaction: true },
-    });
+    return this.paymentRepo.findOne(id);
+  }
+
+  findByTransactionId(transactionId: number) {
+    return this.paymentRepo.findByTransactionId(transactionId);
+  }
+
+  findByStatus(status: string) {
+    return this.paymentRepo.findByStatus(status);
   }
 
   update(id: number, dto: UpdatePaymentDto) {
-    return this.prisma.payment.update({
-      where: { id },
-      data: dto,
-    });
+    return this.paymentRepo.update(id, dto);
   }
 
   async markAsPaid(id: number) {
-    const payment = await this.findOne(id);
+    const payment = await this.paymentRepo.findOne(id);
     if (!payment) throw new NotFoundException('Payment not found');
-
-    return this.prisma.payment.update({
-      where: { id },
-      data: {
-        status: 'PAID',
-        paidAt: new Date(),
-      },
-    });
+    return this.paymentRepo.markAsPaid(id);
   }
 
   remove(id: number) {
-    return this.prisma.payment.delete({ where: { id } });
+    return this.paymentRepo.remove(id);
   }
 }

@@ -1,45 +1,91 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-// import {AuthController} from '../auth/auth.controller';
-import { PrismaClient } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
-import {UpdateTransactionItemDto} from './dto/update-transaction.dto';
+import { UpdateTransactionDto } from './dto/update-transaction.dto';
 
 @Injectable()
 export class TransactionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createTransaction(data: { userId: number; total: number; items: any[] }) {
-
-
-    // await this.authController.loginUser({email: data.email, password: data.password});
-
+  async createTransaction(data: { userId: number; total: number | string }) {
     return this.prisma.transaction.create({
       data: {
         userId: data.userId,
         total: data.total,
-        // items: data.items,
+      },
+      include: {
+        user: true,
+        items: {
+          include: {
+            product: true,
+          },
+        },
+        payment: true,
+        bookings: true,
       },
     });
   }
 
   findAll() {
     return this.prisma.transaction.findMany({
-    //   include: { todos: true },
+      include: {
+        user: true,
+        items: {
+          include: {
+            product: true,
+          },
+        },
+        payment: true,
+        bookings: true,
+      },
     });
   }
 
   findOne(id: number) {
     return this.prisma.transaction.findUnique({
       where: { id },
-    //   include: { todos: true },
+      include: {
+        user: true,
+        items: {
+          include: {
+            product: true,
+          },
+        },
+        payment: true,
+        bookings: true,
+      },
     });
   }
 
-  update(id: number, data: UpdateTransactionItemDto) {
+  findByUserId(userId: number) {
+    return this.prisma.transaction.findMany({
+      where: { userId },
+      include: {
+        user: true,
+        items: {
+          include: {
+            product: true,
+          },
+        },
+        payment: true,
+        bookings: true,
+      },
+    });
+  }
+
+  update(id: number, data: UpdateTransactionDto) {
     return this.prisma.transaction.update({
       where: { id },
       data,
+      include: {
+        user: true,
+        items: {
+          include: {
+            product: true,
+          },
+        },
+        payment: true,
+        bookings: true,
+      },
     });
   }
 
@@ -48,7 +94,4 @@ export class TransactionRepository {
       where: { id },
     });
   }
-
-
-
 }

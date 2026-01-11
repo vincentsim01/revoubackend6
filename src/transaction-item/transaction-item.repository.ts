@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-// import {AuthController} from '../auth/auth.controller';
-import { PrismaClient } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
-import {UpdateTransactionItemDto} from './dto/update-transaction-item.dto/update-transaction-item.dto';
+import { UpdateTransactionItemDto } from './dto/update-transaction-item.dto/update-transaction-item.dto';
 
 @Injectable()
 export class TransactionItemRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createTransactionItem(data: { transactionId: number; productId: number; quantity: number; price: number; }) {
+  async createTransactionItem(data: {
+    transactionId: number;
+    productId: number;
+    quantity: number;
+    price: number;
+  }) {
     return this.prisma.transactionItem.create({
       data: {
         transactionId: data.transactionId,
@@ -17,22 +19,62 @@ export class TransactionItemRepository {
         quantity: data.quantity,
         price: data.price,
       },
+      include: {
+        product: true,
+        transaction: true,
+        // booking: true,
+      },
     });
   }
 
-
-  
-
   findAll() {
     return this.prisma.transactionItem.findMany({
-    //   include: { todos: true },
+      include: {
+        product: true,
+        transaction: {
+          include: {
+            user: true,
+          },
+        },
+        booking: true,
+      },
     });
   }
 
   findOne(id: number) {
     return this.prisma.transactionItem.findUnique({
       where: { id },
-    //   include: { todos: true },
+      include: {
+        product: true,
+        transaction: true,
+        booking: true,
+      },
+    });
+  }
+
+  findByTransactionId(transactionId: number) {
+    return this.prisma.transactionItem.findMany({
+      where: { transactionId },
+      include: {
+        product: true,
+        transaction: {
+          include: {
+            user: true,
+          },
+        },
+        booking: true,
+      },
+    });
+  }
+
+  findByProductId(productId: number) {
+    return this.prisma.transactionItem.findMany({
+      where: { productId },
+      include: {
+        product: true,
+        transaction: true,
+        booking: true,
+      },
     });
   }
 
@@ -40,29 +82,17 @@ export class TransactionItemRepository {
     return this.prisma.transactionItem.update({
       where: { id },
       data,
+      include: {
+        product: true,
+        transaction: true,
+        booking: true,
+      },
     });
   }
 
   delete(id: number) {
-    return this.prisma.user.delete({
+    return this.prisma.transactionItem.delete({
       where: { id },
     });
   }
-
-
-findByEmail(email: string) {
-  return this.prisma.transactionItem.findMany({
-    where: {
-      transaction: {
-        user: {
-          email: email,
-        },
-      },
-    },
-    include: {
-      product: true,
-      transaction: true,
-    },
-  });
-}
 }

@@ -1,16 +1,15 @@
-import { IsInt, IsPositive, IsArray } from 'class-validator';
+import { IsInt, IsPositive, IsNumber, IsNotEmpty } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class CreateTransactionItemDto {
-
-
+export class CreateTransactionDto {
   @IsInt()
   @IsPositive()
+  @IsNotEmpty()
   userId: number;
 
-    @IsInt()
+  @IsNumber()
   @IsPositive()
+  @IsNotEmpty()
+  @Type(() => Number)
   total: number;
-
-    // @IsArray()
-    // items: any[];
 }

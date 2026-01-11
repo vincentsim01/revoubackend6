@@ -15,15 +15,14 @@ import { Role } from 'src/auth/decorators/roles.decorator';
 export class ProductController {
     constructor(private readonly productService:ProductService){}
 
-    @UseGuards(JwtAuthGuard )
-    @Roles(Role.ADMIN)
+    // @UseGuards(JwtAuthGuard )
+    // @Roles(Role.ADMIN)
     @Get()
     getAllProducts(){
         return this.productService.getAllProducts();
     }
 
-    @UseGuards(JwtAuthGuard, RolesGuard, OwnershipGuard)
-    @Roles(Role.ADMIN)
+    @UseGuards(JwtAuthGuard )
     @Get(':id')
     getProduct(@Param('id') id:string){
         return this.productService.getProductById(Number(id));
