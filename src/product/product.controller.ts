@@ -15,8 +15,7 @@ import { Role } from 'src/auth/decorators/roles.decorator';
 export class ProductController {
     constructor(private readonly productService:ProductService){}
 
-    // @UseGuards(JwtAuthGuard )
-    // @Roles(Role.ADMIN)
+
     @Get()
     getAllProducts(){
         return this.productService.getAllProducts();
