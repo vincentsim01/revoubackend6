@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TransactionItemRepository } from './transaction-item.repository';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateTransactionItemDto } from './dto/update-transaction-item.dto/update-transaction-item.dto';
+import { Decimal } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class TransactionItemService {
@@ -30,7 +31,7 @@ export class TransactionItemService {
     transactionId: number;
     productId: number;
     quantity: number;
-    price: number;
+    price: Decimal | number;
   }) {
     return this.transactionItemRepo.createTransactionItem(data);
   }

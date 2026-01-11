@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { Decimal } from '@prisma/client/runtime/library';
 import { UpdateTransactionItemDto } from './dto/update-transaction-item.dto/update-transaction-item.dto';
 
 @Injectable()
@@ -10,7 +11,7 @@ export class TransactionItemRepository {
     transactionId: number;
     productId: number;
     quantity: number;
-    price: number;
+    price: Decimal|number;
   }) {
     return this.prisma.transactionItem.create({
       data: {
@@ -22,7 +23,7 @@ export class TransactionItemRepository {
       include: {
         product: true,
         transaction: true,
-        // booking: true,
+        booking: true,
       },
     });
   }
