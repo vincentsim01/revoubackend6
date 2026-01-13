@@ -2,6 +2,7 @@ import { BookingSessionService } from './bookingsession.service';
 import { Controller , Get, Param, Post, Body, UseGuards, Patch, Delete} from '@nestjs/common';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { UpdateBookingSessionDto } from './dto/update-bookingsession.dto';
+import { CreateBookingSessionDto } from './dto/create-bookingsession.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { OwnershipGuard } from 'src/auth/guards/ownership.guard';
@@ -44,15 +45,7 @@ export class BookingSessionController {
     @UseGuards(JwtAuthGuard)
     @Post()
     createBooking(
-        @Body() body:{
-            bookingDate:string,
-            status:string,
-            notes:string,
-            userId: number,
-            packageId: number,
-            transactionitemId: number,
-            transactionId: number,
-        },
+        @Body() body: CreateBookingSessionDto,
     ){
         return this.bookingSessionService.createBooking(body);
     }

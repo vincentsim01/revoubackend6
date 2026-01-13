@@ -9,7 +9,7 @@ import {UpdateBookingSessionDto} from './dto/update-bookingsession.dto';
 export class BookingSessionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createBookingSession(data: { bookingDate: string; notes: string; status: string; userId: number; packageId: number; transactionitemId: number; transactionId: number; }) {
+  async createBookingSession(data: { bookingDate: string; userId: number; packageId: number; transactionitemId: number; transactionId: number; }) {
 
 
     // await this.authController.loginUser({email: data.email, password: data.password});
@@ -17,8 +17,6 @@ export class BookingSessionRepository {
     return this.prisma.bookingSession.create({
       data: {
         bookingDate: data.bookingDate,
-        notes: data.notes,
-        status: data.status,
         userId: data.userId,
         packageId: data.packageId,
         transactionitemId: data.transactionitemId,
@@ -69,4 +67,4 @@ findByEmail(email: string) {
     },
   });
 }
-}
+}   ``

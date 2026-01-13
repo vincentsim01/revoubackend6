@@ -2,33 +2,31 @@ import { IsBoolean, IsString, IsEmail, IsNotEmpty, IsOptional, IsNumber, MinLeng
 
 export class CreateBookingSessionDto {
 
+@IsNotEmpty()
 @IsString()
 bookingDate: string;
 
-@IsString()
-status: string;
 
 
-@IsString()
-notes: string;
 
-
+@IsNotEmpty()
 @IsNumber()
 userId: number;
 
 
 
-// @IsNumber()
-// packageId: number;
+@IsNotEmpty()
+@IsNumber()
+packageId: number;
 
 
+@IsNotEmpty()
+@IsNumber()
+transactionitemId: number;
 
-// @IsNumber()
-// transactionitemId: number;
-
-
-// @IsNumber()
-// transactionId: number;
+@IsNotEmpty()
+@IsNumber()
+transactionId: number;
 
 
 

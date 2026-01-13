@@ -24,7 +24,6 @@ export class CreateTransactionItemDto {
   quantity: number;
 
   @IsDecimal({ force_decimal: true })
-
   @IsNotEmpty()
   price: number;
 }

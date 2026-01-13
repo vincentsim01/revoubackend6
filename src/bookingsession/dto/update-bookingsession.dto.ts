@@ -5,32 +5,25 @@ export class UpdateBookingSessionDto {
 @IsString()
 bookingDate?: string;
 
-@IsOptional()
-@IsString()
-status?: string;
+
 
 @IsOptional()
-@IsString()
-notes?: string;
+@IsNumber()
+userId?: number;
 
 
-// @IsOptional()
-// @IsNumber()
-// userId?: number;
+@IsOptional()
+@IsNumber()
+packageId?: number;
 
 
-// @IsOptional()
-// @IsNumber()
-// packageId?: number;
+@IsOptional()
+@IsNumber()
+transactionitemId?: number;
 
-
-// @IsOptional()
-// @IsNumber()
-// transactionitemId?: number;
-
-// @IsOptional()
-// @IsNumber()
-// transactionId?: number;
+@IsOptional()
+@IsNumber()
+transactionId?: number;
 
 
 

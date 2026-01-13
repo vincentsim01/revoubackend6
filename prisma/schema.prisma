@@ -94,13 +94,11 @@ model BookingSession {
   id            Int      @id @default(autoincrement())
 
   bookingDate   DateTime
-  status        String   @default("PENDING") 
-  notes         String?
 
   userId        Int
   packageId     Int
   transactionitemId   Int
-  transactionId Int?     // optional until paid
+  transactionId Int     // optional until paid
 
   user        User        @relation(fields: [userId], references: [id])
   package     Package     @relation(fields: [packageId], references: [id])

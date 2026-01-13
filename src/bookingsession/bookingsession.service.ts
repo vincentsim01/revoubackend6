@@ -39,8 +39,6 @@ export class BookingSessionService {
         data:{
             // id:number,
             bookingDate: string,
-            notes: string,
-            status: string,
             userId: number,
             packageId: number,
             transactionitemId: number,
