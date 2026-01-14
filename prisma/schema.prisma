@@ -63,7 +63,6 @@ model TransactionItem {
 
   booking     BookingSession[]
 
-  @@unique([transactionId, productId])
 }
 
 
