@@ -12,6 +12,14 @@ export class ProductService {
         return this.productRepo.findAll();
     }
 
+      /**
+   * Fetch all products by category
+   * @param categoryName
+   */
+    async getProductsByCategory(categoryName: string) {
+        return this.productRepo.findAllByCategory(categoryName);
+    }
+
     getProductById(id:number){
         const product =  this.productRepo.findOne(id);
         if(!product) throw new NotFoundException('product not found');

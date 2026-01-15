@@ -14,10 +14,11 @@ import { CategoryModule } from './category/category.module';
 import { TransactionItemModule } from './transaction-item/transaction-item.module';
 import { CartModule } from './cart/cart.module';
 import { PaymentModule } from './payment/payment.module';
+import { ContactModule } from './contact/contact.module';
 import { JwtService } from '@nestjs/jwt';
 
 @Module({
-  imports: [UserModule, TransactionModule, AccountModule, ProductModule, PrismaModule, AuthModule, PaymentModule, CartModule, TransactionItemModule, CategoryModule, PackageModule, BookingSessionModule],
+  imports: [UserModule, TransactionModule, AccountModule, ProductModule, PrismaModule, AuthModule, PaymentModule, CartModule, TransactionItemModule, CategoryModule, PackageModule, BookingSessionModule, ContactModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

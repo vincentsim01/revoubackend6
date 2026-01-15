@@ -21,6 +21,36 @@ export class ProductRepository {
     });
   }
 
+
+    /**
+   * Get all products for a specific category name
+   * @param categoryName - e.g. "Traditional"
+   */
+  async findAllByCategory(categoryName: string) {
+    console.log("categoryName is "+categoryName)
+    return this.prisma.product.findMany({
+      where: {
+        categories: {
+          some: {
+            category: {
+              name: {
+                equals: categoryName,
+                mode: 'insensitive', // case-insensitive search
+              },
+            },
+          },
+        },
+      },
+      include: {
+        categories: {
+          include: {
+            category: true, // include full category info
+          },
+        },
+      },
+    });
+  }
+
   findAll() {
     return this.prisma.product.findMany();
   }
@@ -30,6 +60,8 @@ export class ProductRepository {
       where: { id },
     });
   }
+
+  
 
   update(id: number, data: UpdateProductDto) {
     return this.prisma.product.update({

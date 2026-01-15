@@ -28,7 +28,7 @@ model Product {
   description     String
   image           String
   transactionItem TransactionItem[]
-  category        Category[]
+  categories      ProductCategory[] // join table
 }
 
 model Category {
@@ -36,9 +36,21 @@ model Category {
   name            String
   createdAt       DateTime          @default(now())
   description     String
-  productId       Int
+ 
   image           String
-  product         Product           @relation(fields: [productId], references: [id])
+  
+
+  products    ProductCategory[] // join table
+}
+
+model ProductCategory {
+  productId   Int
+  categoryId  Int
+
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([productId, categoryId]) // composite primary key to avoid duplicates
 }
 
 model Transaction {
@@ -108,4 +120,13 @@ model BookingSession {
 
   @@index([userId])
   @@index([bookingDate])
+}
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  mobile    BigInt
+  message   String
+  createdAt DateTime @default(now())
 }
