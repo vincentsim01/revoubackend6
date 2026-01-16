@@ -9,7 +9,7 @@ import {UpdateCategoryDto} from './dto/update-category.dto';
 export class CategoryRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createCategory(data: { name: string; description: string; productId: number; image: string;  }) {
+  async createCategory(data: { name: string; description: string; productId?: number; image: string;  }) {
 
 
     // await this.authController.loginUser({email: data.email, password: data.password});
@@ -18,8 +18,14 @@ export class CategoryRepository {
       data: {
         name: data.name,
         description: data.description,
-        productId: data.productId,
         image: data.image,
+        ...(data.productId && {
+          products: {
+            create: {
+              productId: data.productId,
+            },
+          },
+        }),
       },
     });
   }
