@@ -1,21 +1,28 @@
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 
 @Injectable()
 export class OwnershipGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const user = request.user; // from JwtAuthGuard
-    const params = request.params; // e.g., { id: '3' }
+    const params = request.params; // e.g., { id: '3', userId: '5' }
 
     if (!user) return false; // user not authenticated
 
-    // If the user is requesting their own resource, allow
-    if (user.userId === Number(params.id)) {
-      request.skipRolesCheck = true; // optional: tells RolesGuard to skip
+    // If user is admin, allow access
+    if (user.role === 'ADMIN') {
       return true;
     }
 
-    // Otherwise, allow RolesGuard to check admin role
-    return true;
+    // Check if the user is accessing their own resource
+    // Works for routes like /user/:id or /transactions/user/:userId
+    const resourceUserId = params.userId || params.id;
+    
+    if (resourceUserId && user.userId === Number(resourceUserId)) {
+      return true;
+    }
+
+    // If not owner and not admin, deny access
+    throw new ForbiddenException('You do not have permission to access this resource');
   }
 }
