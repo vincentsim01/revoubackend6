@@ -1,0 +1,130 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id Int [pk, increment]
+  email String [unique, not null]
+  name String
+  password String [not null]
+  role String [not null, default: 'USER']
+  refreshToken String
+  transactions Transaction [not null]
+  bookings BookingSession [not null]
+}
+
+Table Product {
+  id Int [pk, increment]
+  title String [not null]
+  price Decimal [not null]
+  createdAt DateTime [default: `now()`, not null]
+  stock Int [not null]
+  description String [not null]
+  image String [not null]
+  transactionItem TransactionItem [not null]
+  categories ProductCategory [not null]
+}
+
+Table Category {
+  id Int [pk, increment]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  description String [not null]
+  image String [not null]
+  products ProductCategory [not null]
+}
+
+Table ProductCategory {
+  productId Int [not null]
+  categoryId Int [not null]
+  product Product [not null]
+  category Category [not null]
+
+  indexes {
+    (productId, categoryId) [pk]
+  }
+}
+
+Table Transaction {
+  id Int [pk, increment]
+  userId Int [not null]
+  total Decimal [not null]
+  createdAt DateTime [default: `now()`, not null]
+  user User [not null]
+  items TransactionItem [not null]
+  bookings BookingSession [not null]
+  payment Payment [not null]
+}
+
+Table TransactionItem {
+  id Int [pk, increment]
+  transactionId Int [not null]
+  productId Int [not null]
+  quantity Int [not null]
+  price Decimal [not null]
+  product Product [not null]
+  transaction Transaction [not null]
+  booking BookingSession [not null]
+}
+
+Table Package {
+  id Int [pk, increment]
+  name String [unique, not null]
+  description String
+  price Decimal [not null]
+  durationMin Int [not null]
+  bookings BookingSession [not null]
+}
+
+Table Payment {
+  id Int [pk, increment]
+  provider String [not null]
+  amount Decimal [not null]
+  status String [not null]
+  paidAt DateTime
+  transactionId Int [not null]
+  transaction Transaction [not null]
+}
+
+Table BookingSession {
+  id Int [pk, increment]
+  bookingDate DateTime [not null]
+  userId Int [not null]
+  packageId Int [not null]
+  transactionitemId Int [not null]
+  transactionId Int [not null]
+  user User [not null]
+  package Package [not null]
+  transaction Transaction
+  transactionItem TransactionItem [not null]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Table Contact {
+  id Int [pk, increment]
+  name String [not null]
+  email String [not null]
+  mobile BigInt [not null]
+  message String [not null]
+  createdAt DateTime [default: `now()`, not null]
+}
+
+Ref: ProductCategory.productId > Product.id [delete: Cascade]
+
+Ref: ProductCategory.categoryId > Category.id [delete: Cascade]
+
+Ref: Transaction.userId > User.id
+
+Ref: TransactionItem.productId > Product.id
+
+Ref: TransactionItem.transactionId > Transaction.id [delete: Cascade]
+
+Ref: Payment.transactionId > Transaction.id [delete: Cascade]
+
+Ref: BookingSession.userId > User.id
+
+Ref: BookingSession.packageId > Package.id
+
+Ref: BookingSession.transactionId > Transaction.id [delete: Cascade]
+
+Ref: BookingSession.transactionitemId > TransactionItem.id [delete: Cascade]
