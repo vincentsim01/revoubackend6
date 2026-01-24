@@ -34,4 +34,3 @@ export class TransactionService {
   }
 }
 
-then what does this do
