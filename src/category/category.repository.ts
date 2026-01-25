@@ -22,11 +22,7 @@ export class CategoryRepository {
         ...(data.productId && {
           products: {
             create: {
-              product: {
-                connect: {
-                  id: data.productId,
-                },
-              },
+              productId: data.productId,
             },
           },
         }),
